@@ -7,25 +7,25 @@ class TrieNode:
     
     def insert(self, char):
         self.children[char] = TrieNode()
-    
+        
     def suffixes(self, prefix=""):
         current = self
-        word_list = [current]
-        print(word_list)
+        word_list = []
+        temp = "" 
+        print('word_list', word_list)
+                
+        if current.is_word_finished:
+            word_list.append(prefix[:])
         
         for key, value in current.children.items():
-            print('cur.child.key: ', key, 'val:', value)
-            if current.is_word:
-                word_list.append(prefix[:])
-            else: 
-                word_list.append(key)
-                # self.suffixes(value)  
-                word_list.pop()
-                print('popped from traverse', word_list)
-
+            print('cur.child key: ', key, 'val:', value)
+            print('curr_child_len', len(current.children.items()))
+            temp += key
+            word_list.append(temp)
+            # self.suffix_recursive(temp)
+            print('recursive worked!, word_list: ', word_list)
+        
         return word_list
-        print('word: ', word_list)
-            
     
 class Trie:
     def __init__(self):
