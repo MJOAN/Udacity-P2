@@ -1,72 +1,98 @@
-# Rearrange Array Elements
-# Rearrange Array Elements so as to form two number such that their sum is maximum. 
-# Return these two numbers. You can assume that all array elements are in the range [0, 9]. 
-# The number of digits in both the numbers cannot differ by more than 1. 
-# You're not allowed to use any sorting function that 
-# Python provides and the expected time complexity is O(nlog(n)).
-
-def rearrange_digits(input_list):
-    lo = 0
-    hi = len(input_list) - 1
-    current_maximum = 0
-    highest_maximum = 0
+def rearrange_digits(l):
+    l = mergesort(l) 
     
-    while lo <= hi:
-        mid = (lo + hi)//2
-        
-        first_half = input_list[:mid]
-        second_half = input_list[mid:]
-        
-        print('first1/2', first_half)
-        print('second1/2', second_half)
-        
-        left = list_to_numbers(first_half)
-        right = list_to_numbers(second_half)
-        
-        print('left: ', left)
-        print('right: ', right)
-        
-        current_maximum = right + left 
-        print('current_maximum', current_maximum)
-        
-        if left + right > current_maximum:
-            highest_maximum = current_maximum
-            print('highest_maximum', highest_maximum)
-            hi -= 1
-            continue
-        else: 
-            lo += 1
-            continue
-        
-    print('final', left, right)
-    return (left, right)
-        
-def list_to_numbers(_list): # cite: 1
-    numbers = [str(i) for i in _list]
-    result = int("".join(numbers))
-    return result
-        
-    # divide list into two halfs using a pivot 
-    # merge sort similar
-    # add each half of list as one whole number
-    # set maximum variable 
-    # if convert list 1 to numbers as (sum) + 
-    # convert list 2 to numbers as (sum) 
-    # add both as current max
-    # if current max is greater than highest max then,
-    # update maximum 
-    # return max 
+    first_max_sum = 0
+    second_max_sum = 0
+    
+    for number in range(len(l)):  # cite: 1
+        if (number % 2 == 0): 
+            first_max_sum = first_max_sum * 10 + l[number] # cite: 4
+        else:
+            second_max_sum = second_max_sum * 10 + l[number]
+       
+    return [first_max_sum, second_max_sum]
 
-def test_function(test_case):
+def mergesort(items): # cite: 2
+
+    if len(items) <= 1:
+        return items
+    
+    mid = len(items) // 2
+    left = items[:mid]
+    right = items[mid:]
+    
+    left = mergesort(left)
+    right = mergesort(right)
+    
+    return merge(left, right)
+
+def merge(left, right):
+    
+    merged = []
+    left_index = 0 
+    right_index = 0
+       
+    while left_index < len(left) and right_index < len(right):
+        if left[left_index] > right[right_index]: # for reverse order
+            merged.append(left[left_index]) 
+            left_index += 1
+        else:
+            merged.append(right[right_index]) 
+            right_index += 1
+    
+    merged += left[left_index:]
+    merged += right[right_index:]
+    
+    return merged
+    
+def test_function1(test_case):
     output = rearrange_digits(test_case[0])
     solution = test_case[1]
+    print('output_mine: ', output)
+    print('solution_test: ', solution)
     if sum(output) == sum(solution):
         print("Pass")
     else:
         print("Fail")
+        
+test_function1([[1, 2, 3, 4, 5], [542, 31]]) 
+test_case1 = [[4, 6, 2, 5, 9, 8], [964, 852]]
 
-test_function([[1, 2, 3, 4, 5], [542, 31]]) 
-test_case = [[4, 6, 2, 5, 9, 8], [964, 852]] 
+    
+def test_function2(test_case):
+    output = rearrange_digits(test_case[0])
+    solution = test_case[1]
+    print('output_mine: ', output)
+    print('solution_test: ', solution)
+    if sum(output) == sum(solution):
+        print("Pass")
+    else:
+        print("Fail")
+        
+test_function2([[1, 2, 3, 4, 5], [542, 31]]) 
+test_case2 = [[4, 6, 2, 5, 9, 8], [964, 852]]
+
+
+    
+def test_function3(test_case):
+    output = rearrange_digits(test_case[0])
+    solution = test_case[1]
+    print('output_mine: ', output)
+    print('solution_test: ', solution)
+    if sum(output) == sum(solution):
+        print("Pass")
+    else:
+        print("Fail")
+        
+test_function3([[1, 2, 3, 4, 5], [542, 31]]) 
+test_case3 = [[4, 6, 2, 5, 9, 8], [964, 852]]
+
+
+
+
 
 # Citations:
-# 1. https://www.geeksforgeeks.org/python-convert-a-list-of-multiple-integers-into-a-single-integer/
+# 1. https://www.geeksforgeeks.org/sum-even-odd-elements-array/
+# 2. http://localhost:8888/notebooks/Notebooks/Udacity/merge_sort_walkthrough.ipynb
+# 3. https://stackoverflow.com/questions/49618039/how-can-i-re-sort-an-array-in-place-to-put-the-even-indexed-items-before-the-odd
+# 4. https://stackoverflow.com/questions/33607753/way-to-combine-integer-array-to-a-single-integer-variable

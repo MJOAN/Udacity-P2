@@ -1,25 +1,34 @@
-# Max and Min in a Unsorted Array
-# In this problem, we will look for smallest and largest integer from a 
-# list of unsorted integers. The code should run in O(n) time. Do not use 
-# Python's inbuilt functions to find min and max.
-# Bonus Challenge: Is it possible to find the max and min in a single traversal?
+def get_min_max(l):    
+    _min = l[0]
+    _max = l[len(l) - 1]
+    
+    for number in l:
+        if l[number] > _max:
+            _max = l[number]
+        else:
+            if l[number] < _min:
+                _min = l[number]
 
-def get_min_max(ints):
-    """
-    Return a tuple(min, max) out of list of unsorted integers.
+    return (_min, _max)
 
-    Args:
-       ints(list): list of integers containing one or more integers
-    """
-    pass
-
-
-## Example Test Case of Ten Integers
 import random
+l1 = [i for i in range(0, 9)]  
+random.shuffle(l1)
 
-l = [i for i in range(0, 10)]  # a list containing 0 - 9
-random.shuffle(l)
+print('Test 1 Randomized List: ', l1)
+print('MAX and MIN: ', (max(l1), min(l1)))
+print ("Pass" if ((min(l1), max(l1)) == get_min_max(l1)) else "Fail")
 
-print ("Pass" if ((0, 9) == get_min_max(l)) else "Fail")
-# Sorting usually requires O(n log n) time Can you come up with a O(n) algorithm 
-# (i.e., linear time)?
+l2 = [i for i in range(0, 9)]  
+random.shuffle(l2)
+
+print('Test 2 Randomized List: ', l2)
+print('MAX and MIN: ', (max(l2), min(l2)))
+print ("Pass" if ((min(l2), max(l2)) == get_min_max(l2)) else "Fail")
+
+l3 = [i for i in range(0, 9)]  
+random.shuffle(l3)
+
+print('Test 3 Randomized List: ', l3)
+print('MAX and MIN: ', (max(l3), min(l3)))
+print ("Pass" if ((min(l3), max(l3)) == get_min_max(l3)) else "Fail")

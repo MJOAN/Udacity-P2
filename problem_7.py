@@ -1,117 +1,84 @@
 from collections import defaultdict
 
 class RouteTrieNode:
-    def __init__(self):
-        self.children = defaultdict()
-        self.handler = "home"   
-            
-    def get_node(self):   
-        return RouteTrieNode()     
-    
-    def insert(self, path):
-        self.children[path] = RouteTrieNode()
+    def __init__(self, handler = None):
+        self.children = {}
+        self.handler = handler
 
-class RouteTrie:
-    def __init__(self):
-        self.root = RouteTrieNode()
-        self.handler = "/" # root
+    def insert(self, part):
+        self.children[part] = RouteTrieNode()
 
     def __repr__(self):
-        return repr(self)
-    
-    def insert(self, path):
-        if self.root is None:
-            self.root = node
-        
-        if self.root is not None:
-            current = self.root
-    
-        for item in path:
-            print('item', item)
-            if item not in current.children:
-                print('item', item)
-                current.children[item] = RouteTrieNode()
-            
-            current = current.children[item]
-            print('curr', current)
-        
-        print('path: ', path)
-        current.handler = path # set final node to full handler ""
-            
-    def find(self, path):
-        if self.root is None:
-            self.root = current
+        return str(self.children)+ str(self.children)
 
-        if self.root is not None:
-            current = self.root
-        
-        for char in path:
-            print('char in prefix: ',char)
-            if char not in current.children:
-                return None
-            if current.children is None: # we are on the deepest leaf
-                print('handler: ', handler)
-                handler = current.handler    
-        
-        print('handler', handler)
-        return handler
+class RouteTrie:
+    def __init__(self, root_handler = None):
+        self.root_handler = "/" 
+        self.root = RouteTrieNode(root_handler)  
+
+    def __repr__(self):
+        return self.root
     
-class Router:
-    def __init__(self, path):
-        self.root = RouteTrie() # for holding routes
-    
-    def get_node(self):
-        return RouteTrieNode()
-    
-    def add_handler(self, path, handler):        
-        parts = self.split_path(path)
-        print('parst', parts)
-        handler_parts = ""
-        
-        for part in parts:
-            print('parts', part)
-            handler_parts += " " + part 
-            print('handler_parts: ', handler_parts)
-        
-        return handler_parts[0:]
-                    
-    def lookup(self, path):
-        current = self.get_node()
-        
-        parts = self.split_path(path)
-        print('parts', parts)
-        
-        for part in parts:
-            if part not in current.children.keys():
-                return None
-            current = current.children[part]
+    def insert(self, parts, handler):
+        current = self.root
+
+        for item in parts:
+            if item not in current.children:
+                current.children[item] = RouteTrieNode(handler)
+            current = current.children[item]
             
-        return current
+        current.handler = handler
+        
+    def find(self, parts):
+        if self.root is None:
+            self.root = RouteTrieNode()
+        else:
+            current = self.root
+
+        for item in parts:
+            if item not in current.children:
+                return None
+            else:
+                current = current.children[item]
+                
+        handler = current.handler
+        return handler
+
+class Router:
+    def __init__(self, root_handler = None):
+        self.router = RouteTrie(root_handler)  
+
+    def add_handler(self, path, handler):
+        current = self.router
+        parts = self.split_path(path)
+        current.insert(parts, handler)
+
+    def lookup(self, path):
+        current = self.router
+        parts = self.split_path(path)
+        return current.find(parts)
 
     def split_path(self, path):
-        return path.split("/")        
+        return path.split("/")[1:]
 
-url_router = RouteTrie()
-print(url_router.insert("/home/about"))
-print(url_router.insert("/home/contact"))
-print(url_router.insert("/home/applications"))
-print(url_router.insert("/home/services"))
+router = Router("root handler") 
+router.add_handler("/", "root handler")
+router.add_handler("/home", "home handler")
+router.add_handler("/home/about", "about handler")
+router.add_handler("/home/contact", "contact handler")
+router.add_handler("/home/applications", "applications handler")
+router.add_handler("/home/services", "services handler")
+router.add_handler("/home/about/resume", "about resume handler")
+router.add_handler("/home/applications/python", "applications python handler")
+router.add_handler("/home/services/pricing", "services pricing handler")
 
-router = Router("root handler")
-print('router', router)
+print('Test 1: Root path: ', router.lookup("/"))  # root handler
+print('Test 1: Home path: ', router.lookup("/home"))  # home handler
+print('Test 1: Home about path: ', router.lookup("/home/about"))  # about handler
 
-router.add_handler("/home/about", "about handler")  
-router.add_handler("/home/contact", "resume handler")  
-router.add_handler("/home/applications", "projects handler")  
-router.add_handler("/home/services", "contact handler") 
+print('Test 2: Home serivces path: ', router.lookup("/home/services"))   # services handler
+print('Test 2: Home applications path: ', router.lookup("/home/applications/python"))   # applications python handler
 
-router.add_handler("/home/about/resume", "about resume handler") 
-router.add_handler("/home/applications/python", "applications python handler") 
-router.add_handler("/home/services/pricing", "services pricing handler") 
+print('Test 3: Home services pricing path: ', router.lookup("/home/services/pricing"))  # services pricing handler
+print('Test 3: Home contact path: ', router.lookup("/home/contact"))  # contact handler
 
-
-print(router.lookup("/")) # should print 'root handler'
-print(router.lookup("/home")) # should print 'not found handler' or None if you did not implement one
-print(router.lookup("/home/about")) # should print 'about handler'
-print(router.lookup("/home/about/")) # should print 'about handler' or None if you did not handle trailing slashes
-print(router.lookup("/home/about/me")) # should print 'not found handler' or None if you did not implement one

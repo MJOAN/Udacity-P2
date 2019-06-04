@@ -20,12 +20,10 @@ class TrieNode:
     
     def suffixes(self, prefix=""):
         current = self
-        not_found = False
         suffix = ""
         
         for char in current.children.keys():
             if not current.children[char]:
-                not_found = True
                 break
                  
             suffix += char
@@ -46,7 +44,6 @@ class TrieNode:
 class Trie:
     def __init__(self):
         self.root = TrieNode()
-        self.word_list = [] 
     
     def insert(self, word):
         if self.root is None:
@@ -107,53 +104,9 @@ def f(prefix):
         print('')
 interact(f,prefix='')
 
-# Cite: http://www.cs.jhu.edu/~langmea/resources/lecture_notes/tries_and_suffix_tries.pdf
-
 # Citations:
 # 1. http://www.cs.jhu.edu/~langmea/resources/lecture_notes/tries_and_suffix_tries.pdf
-
-
-
-
-
-################ DRAFTED CODE ####################################
-        # current = self
-        # print('current: ', current)
-        
-        # word_list = []
-        # word = list(prefix[:-1])
-        # print('word:  prefix:-1 -->', word)
-
-        # stack = []
-        # stack.append(prefix)
-        
-        # while stack:
-        #     node = stack.pop()
-        #     print('node', node)
-            
-        #     if node is None:
-        #         word.pop()
-        #         continue
-
-        #     word.append(node)  
-        #     print('word: ', word)
-        #     if current.is_word_finished:
-        #         word_list.append(''.join(word))
-        #         print('word_list: ', word_list)
-        #     for char in current.children.keys(): # get remaining suffixes
-        #         value = current.children[char] 
-        #         stack.append(None)
-        #         # stack.append(char)
-        #         stack.append(char)
-        #         print('stack append children chars', char)
-                
-        # print('word_list', word_list)
-        # return word_list
-
-    #     def suffixes(prefix, node, word_list):
-    #        current = node
-    #        word_list = []
-    #         if current.is_word_finished:
-    #             word_list.append(prefix)
-    #         for char in current.children:
-    #             suffixes(prefix + char, current.children[char], word_list)
+# 2. http://www.cs.cmu.edu/afs/cs/academic/class/15451-f17/www/lectures/lec10-sufftree.pdf
+# 3. https://medium.com/basecs/trying-to-understand-tries-3ec6bede0014 
+# 4. https://www.hackerearth.com/practice/data-structures/advanced-data-structures/suffix-trees/tutorial/
+# 5. https://startupnextdoor.com/fun-with-tries/
