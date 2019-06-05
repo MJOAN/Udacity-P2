@@ -1,6 +1,14 @@
 ------ Overview -------------
 
-Finding the square root of a number can be found by implementing a binary search which takes a low number as 1 and a parameter number as the highest value. From there in our while loop we are calculating a new mid value based on if the mid squared is our number argument. If it is, we return the mid. Otherwise, if mid squared is less than our parameter number, we increase our mid by 1 and assign it to low, while resetting our mid to our result variable. Rather if mid squared is larger than our parameter number, we assign our mid - 1 to high. At each iteration we are dividing our results and iterating until we find our square root.
+Finding the square root of a number can be found by implementing a binary search which takes a low number as 1 and a parameter number as the highest value. From there in our while loop we are calculating a new mid value based on if the mid squared is our number argument. If it is, we return the mid. Otherwise, if mid squared is less than our parameter number, we increase our mid by 1 and assign it to low, while resetting our mid to our result variable. Rather if mid squared is larger than our parameter number, we assign our mid - 1 to high. At each iteration we are dividing our results and iterating until we find our square root. Time complexity here will be O(Log N) because of every time we iterate and make a comparison of our mid value our search gets divided in 1/2. Any time you have a dividing of your input values you are multiplying each iteration by 1/2 to a power of how many times this occurs. Space complexity is O(1) because of our iterative while loop. 
+
+```
+_n * (1/2)^k = 1_
+_n * 1/2^k = 1_
+_n = 2^k_
+_log2n = k_
+
+```
 
 1. base case if statement - O(1)
 2. assigning variables * 3 - O(1) 
